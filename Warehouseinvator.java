@@ -1,53 +1,50 @@
-public class Warehouseinvator{
-    static void analyzeInventory(int[] a, int[] b){
-        int sumA = 0;
-        int sumB = 0;
+public class LibraryISBNnormalizer{
+    static String normalizeCode(String raw){
+        raw = raw.trim();
 
-        int max = a[0];
-        String section = "A";
-        int index = 0;
+        return raw.substring(0, 3).toUpperCase()
+             + raw.substring(3);
+    }
 
-        for(int i = 0; i < a.length; i++){
-            sumA += a[i];
+    static String validateAndFormat(String code){
+        if(code.length() != 13)
+            return "Invalid: wrong length";
 
-            if(a[i] > max)
-            {
-                max = a[i];
-                section = "A";
-                index = i;
-            }
+        for(int i = 0; i < 3; i++)
+        {
+            if(!Character.isLetter(code.charAt(i)))
+                return "Invalid: publisher code must be 3 letters";
         }
 
-        for(int i = 0; i < b.length; i++){
-            sumB += b[i];
-
-            if(b[i] > max)
-            {
-                max = b[i];
-                section = "B";
-                index = i;
-            }
+        for(int i = 3; i < 13; i++)
+        {
+            if(!Character.isDigit(code.charAt(i)))
+                return "Invalid: body must contain only digits";
         }
 
-        String status;
+        String publisher = code.substring(0, 3);
+        String year = code.substring(3, 7);
+        String catalog = code.substring(7);
 
-        if(sumA == sumB)
-            status = "Balanced";
-        else
-            status = "Not Balanced";
+        StringBuilder result = new StringBuilder();
 
-        System.out.println("Section A Total: " + sumA);
-        System.out.println("Section B Total: " + sumB);
-        System.out.println("Status: " + status);
-        System.out.println("Highest Quantity: " + max +
-                           " (Section " + section +
-                           ", Item " + (index + 1) + ")");
+        result.append("[");
+        result.append(publisher);
+        result.append("] YEAR: ");
+        result.append(year);
+        result.append(" | CATALOG: ");
+        result.append(catalog);
+
+        return result.toString();
     }
 
     public static void main(String[] args){
-        int[] a = {20, 15, 30};
-        int[] b = {25, 10, 30};
+        String code = normalizeCode(" pen2026004251 ");
 
-        analyzeInventory(a, b);
+        System.out.println(validateAndFormat(code));
+
+        String code2 = normalizeCode("12N2026004251");
+
+        System.out.println(validateAndFormat(code2));
     }
 }
