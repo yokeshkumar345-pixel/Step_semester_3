@@ -1,27 +1,26 @@
-public class Speedaccuracycheacker{
-    static void checkTypingAccuracy(String original, String typed){
-        int matched = 0;
-        int firstMismatch = -1;
+public class Wordreversal{
+    static String reverseEachWord(String sentence){
+        String[] words = sentence.split(" ");
+        String result = "";
 
-        for(int i = 0; i < original.length(); i++){
-            if(original.charAt(i) == typed.charAt(i))
-                matched++;
-            else if(firstMismatch == -1)
-                firstMismatch = i;
+        for(int i = 0; i < words.length; i++)
+        {
+            StringBuilder sb =
+                new StringBuilder(words[i]);
+
+            sb.reverse();
+
+            result += sb;
+
+            if(i < words.length - 1)
+                result += " ";
         }
 
-        double accuracy = (matched * 100.0) / original.length();
-
-        if(firstMismatch == -1)
-            System.out.printf("Matched: %d/%d | Accuracy: %.2f%% | No Mismatches",
-                    matched, original.length(), accuracy);
-        else
-            System.out.printf(
-                "Matched: %d/%d | Accuracy: %.2f%% | First Mismatch at position %d",
-                matched, original.length(), accuracy, firstMismatch + 1);
+        return result;
     }
 
     public static void main(String[] args){
-        checkTypingAccuracy("hello world", "hello worlt");
+        System.out.println(
+            reverseEachWord("hello club"));
     }
 }
